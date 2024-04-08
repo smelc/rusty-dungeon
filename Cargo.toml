@@ -6,3 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# See https://github.com/amethyst/bracket-lib/issues/318#issuecomment-1380021492 for explanation about the features flag
+rltk = {version="0.8.7", features=["webgpu"], default-features=false }
+specs = "0.16.1"
+specs-derive = "0.4.1"
