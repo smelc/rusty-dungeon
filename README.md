@@ -2,7 +2,7 @@
 
 ## Playing Instructions
 
-This is not a game, this project is for me to learn Rust 🙂 so
+None: this is not a game, this project is for me to learn [Rust](https://www.rust-lang.org/) 🙂
 
 ## Development Instructions
 
@@ -21,5 +21,3 @@ So after having written [Dungeon Mercenary](https://smelc3.itch.io/dungeon-merce
 [Rogue vs Evil](https://smelc3.itch.io/rogue-vs-evil) in Java,
 and [Pixel Card Wars](https://github.com/smelc/miso-darkcraw) in Haskell;
 I'm now doing an ASCII roguelike in rust 🎉.
-
-This is how _rusty-dungeon_ was born.
