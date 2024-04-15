@@ -3,7 +3,8 @@ use specs::prelude::*;
 use std::cmp::{max, min};
 use specs_derive::Component;
 
-
+// const MAP_WIDTH: i32 = 80;
+// const MAP_HEIGHT : i32 = 50;
 
 #[derive(Component)]
 struct Position {
