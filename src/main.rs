@@ -1,3 +1,4 @@
+use direction::Direction;
 use rltk::{GameState, Rltk, VirtualKeyCode, RGB};
 use specs::prelude::*;
 use specs_derive::Component;
@@ -25,14 +26,14 @@ struct State {
     ecs: World,
 }
 
-fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
+fn try_move_player(ecs: &mut World, dir: &Direction) {
     let mut positions = ecs.write_storage::<direction::Position>();
     let mut players = ecs.write_storage::<Player>();
 
     // Recall that smaller y means more at the top.
     for (_player, pos) in (&mut players, &mut positions).join() {
-        pos.x = min(79, max(0, pos.x + delta_x));
-        pos.y = min(49, max(0, pos.y + delta_y));
+        pos.x = min(79, max(0, pos.x + direction::to_x_delta(&dir)));
+        pos.y = min(49, max(0, pos.y + direction::to_y_delta(&dir)));
     }
 }
 
@@ -41,10 +42,10 @@ fn player_input(gs: &mut State, ctx: &mut Rltk) {
     match ctx.key {
         None => {} // Nothing happened
         Some(key) => match key {
-            VirtualKeyCode::Left => try_move_player(-1, 0, &mut gs.ecs),
-            VirtualKeyCode::Right => try_move_player(1, 0, &mut gs.ecs),
-            VirtualKeyCode::Up => try_move_player(0, -1, &mut gs.ecs),
-            VirtualKeyCode::Down => try_move_player(0, 1, &mut gs.ecs),
+            VirtualKeyCode::Left => try_move_player(&mut gs.ecs, &Direction::LEFT),
+            VirtualKeyCode::Right => try_move_player(&mut gs.ecs, &Direction::RIGHT),
+            VirtualKeyCode::Up => try_move_player(&mut gs.ecs, &Direction::UP),
+            VirtualKeyCode::Down => try_move_player(&mut gs.ecs, &Direction::DOWN),
             _ => {}
         },
     }
@@ -95,18 +96,6 @@ fn main() -> rltk::BError {
 
     add_walls(&mut gs);
 
-    for i in 0..10 {
-        gs.ecs
-            .create_entity()
-            .with(direction::Position { x: i * 7, y: 20 })
-            .with(Renderable {
-                glyph: rltk::to_cp437('☺'),
-                fg: RGB::named(rltk::RED),
-                bg: RGB::named(rltk::BLACK),
-            })
-            .build();
-    }
-
     rltk::main_loop(context, gs)
 }
 
@@ -132,7 +121,7 @@ fn make_wall(gs: &mut State, x: i32, y: i32) -> EntityBuilder<'_> {
         .with(direction::Position { x, y })
         .with(Renderable {
             glyph: rltk::to_cp437('#'),
-            fg: RGB::named(rltk::RED),
+            fg: RGB::named(rltk::GREY),
             bg: RGB::named(rltk::BLACK),
         })
 }
